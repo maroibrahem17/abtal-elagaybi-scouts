@@ -36,7 +36,7 @@ function notify(message, type = "success") {
 }
 
 function loginView() {
-  frame(`<section class="admin-panel admin-panel--narrow"><p class="admin-kicker">كشافة أبطال العجايبي</p><h1>دخول الإدارة</h1><p class="admin-lead">مساحة مخصصة لإدارة محتوى الموقع.</p><form id="adminLoginForm" class="admin-form"><label>البريد الإلكتروني<input name="email" type="email" autocomplete="username" required /></label><label>كلمة المرور<input name="password" type="password" autocomplete="current-password" required /></label><p id="adminLoginError" class="admin-error" role="alert" hidden></p><button class="btn btn-gold" type="submit">تسجيل الدخول</button></form><a class="admin-back" href="/">العودة إلى الموقع</a></section>`);
+  frame(`<section class="admin-panel admin-panel--narrow"><p class="admin-kicker">كشافة أبطال العجايبي</p><h1>دخول الإدارة</h1><p class="admin-lead">مساحة مخصصة لإدارة محتوى الموقع.</p><form id="adminLoginForm" class="admin-form"><label>البريد الإلكتروني<input name="email" type="email" autocomplete="username" required /></label><label>كلمة المرور<input name="password" type="password" autocomplete="current-password" required /></label><p id="adminLoginError" class="admin-error" role="alert" hidden></p><button class="btn btn-gold" type="submit">تسجيل الدخول</button></form><a class="admin-back" href="${appPath()}">العودة إلى الموقع</a></section>`);
   document.querySelector("#adminLoginForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -63,7 +63,7 @@ function loadingView() {
 }
 
 function configView() {
-  frame(`<section class="admin-panel admin-panel--center"><p class="admin-kicker">إعداد Firebase مطلوب</p><h1>لوحة التحكم</h1><p>أضف قيم Firebase إلى <code>.env.local</code> قبل استخدام إدارة المحتوى.</p><a class="btn btn-gold" href="/">العودة إلى الموقع</a></section>`);
+  frame(`<section class="admin-panel admin-panel--center"><p class="admin-kicker">إعداد Firebase مطلوب</p><h1>لوحة التحكم</h1><p>أضف قيم Firebase إلى <code>.env.local</code> قبل استخدام إدارة المحتوى.</p><a class="btn btn-gold" href="${appPath()}">العودة إلى الموقع</a></section>`);
 }
 
 function deniedView() {
@@ -84,7 +84,7 @@ function nav(active) {
 
 function dashboardFrame(active, content, user) {
   frame(`<div class="admin-layout">${nav(active)}<section class="admin-workspace"><div class="admin-mobile-head"><strong>لوحة التحكم</strong><button id="adminLogoutMobile" class="admin-logout" type="button">خروج</button></div><div class="admin-workspace__top"><div><p class="admin-kicker">مساحة آمنة</p><h1>${active === "/admin" ? "لوحة التحكم" : active.split("/").pop()}</h1><p>${escapeHtml(user.email || "مشرف الإدارة")}</p></div></div><div id="adminNotice" class="admin-notice" hidden></div>${content}</section></div>`);
-  const logout = async () => { await signOutAdmin(); window.location.assign(appPath("/admin/login")); };
+  const logout = async () => { await signOutAdmin(); window.location.assign(appPath()); };
   document.querySelector("#adminLogout")?.addEventListener("click", logout);
   document.querySelector("#adminLogoutMobile")?.addEventListener("click", logout);
 }
