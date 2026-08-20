@@ -40,7 +40,7 @@
         <nav class="primary-nav" aria-label="التنقل الرئيسي">
           <a href="#about">من نحن</a>
           <a href="#activities">ألبوم الصور</a>
-          <a href="/shop">المتجر الكشفي</a>
+          <a href="%BASE_URL%shop">المتجر الكشفي</a>
           <a href="#contact">اتصل بنا</a>
         </nav>
 
@@ -97,7 +97,9 @@
             id="menuBtn"
             class="icon-btn menu-btn"
             type="button"
-            aria-label="القائمة">
+            aria-label="القائمة"
+            aria-controls="mobileNav"
+            aria-expanded="false">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path
                 d="M4 7h16M4 12h16M4 17h16"
@@ -114,7 +116,7 @@
     <nav id="mobileNav" class="mobile-nav" aria-label="قائمة الجوال">
       <a href="#about">من نحن</a>
       <a href="#activities">ألبوم الصور</a>
-      <a href="/shop">المتجر الكشفي</a>
+      <a href="%BASE_URL%shop">المتجر الكشفي</a>
       <a href="#contact">اتصل بنا</a>
       <a href="#chants">الصيحات الكشفية</a>
     </nav>
@@ -402,7 +404,7 @@
             <li><a href="#home">الرئيسية</a></li>
             <li><a href="#about">من نحن</a></li>
             <li><a href="#activities">ألبوم الصور</a></li>
-            <li><a href="/shop">المتجر الكشفي</a></li>
+            <li><a href="%BASE_URL%shop">المتجر الكشفي</a></li>
             <li><a href="#contact">اتصل بنا</a></li>
           </ul>
         </div>

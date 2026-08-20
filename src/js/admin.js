@@ -5,7 +5,13 @@ import { getChants, createChant, updateChant, deleteChant } from "./services/fir
 import { getGallery, createGalleryItem, updateGalleryItem, deleteGalleryItem } from "./services/firestore/gallery.js";
 import { getGeneralSettings, updateGeneralSettings } from "./services/firestore/settings.js";
 
-const route = () => window.location.pathname.replace(/\/$/, "") || "/admin";
+const APP_BASE = import.meta.env.BASE_URL;
+const appPath = (path = "/") => `${APP_BASE}${path.replace(/^\/+/, "")}`;
+const route = () => {
+  const path = window.location.pathname;
+  const normalized = APP_BASE !== "/" && path.startsWith(APP_BASE) ? path.slice(APP_BASE.length - 1) : path;
+  return normalized.replace(/\/$/, "") || "/admin";
+};
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]);
 const numberValue = (value) => Number.isFinite(Number(value)) && Number(value) >= 0 ? Number(value) : 0;
 
@@ -42,7 +48,7 @@ function loginView() {
     error.hidden = true;
     try {
       await signInAdmin(String(data.get("email")).trim(), String(data.get("password")));
-      window.location.assign("/admin");
+      window.location.assign(appPath("/admin"));
     } catch (authError) {
       error.textContent = authError.message === "firebase-not-configured" ? "إعداد Firebase غير مكتمل بعد." : firebaseAuthMessage(authError);
       error.hidden = false;
@@ -62,7 +68,7 @@ function configView() {
 
 function deniedView() {
   frame(`<section class="admin-panel admin-panel--center"><p class="admin-kicker">Access denied</p><h1>ليس لديك صلاحية الإدارة</h1><p>هذا الحساب ليس ضمن مستخدمي الإدارة المعتمدين.</p><button id="deniedLogout" class="btn btn-outline" type="button">تسجيل الخروج</button></section>`);
-  document.querySelector("#deniedLogout").addEventListener("click", async () => { await signOutAdmin(); window.location.assign("/admin/login"); });
+  document.querySelector("#deniedLogout").addEventListener("click", async () => { await signOutAdmin(); window.location.assign(appPath("/admin/login")); });
 }
 
 function nav(active) {
@@ -73,12 +79,12 @@ function nav(active) {
     ["/admin/gallery", "ألبوم الصور", "04"],
     ["/admin/settings", "الإعدادات", "05"],
   ];
-  return `<aside class="admin-sidebar"><a class="admin-brand" href="/admin"><span>✦</span><strong>أبطال العجايبي</strong><small>لوحة التحكم</small></a><nav>${links.map(([href, label, number]) => `<a class="${active === href ? "is-active" : ""}" href="${href}"><span>${number}</span>${label}</a>`).join("")}<span class="admin-nav-disabled"><span>06</span>الطلبات <em>لاحقًا</em></span></nav><button id="adminLogout" class="admin-logout" type="button">تسجيل الخروج</button></aside>`;
+  return `<aside class="admin-sidebar"><a class="admin-brand" href="${appPath("/admin")}"><span>✦</span><strong>أبطال العجايبي</strong><small>لوحة التحكم</small></a><nav>${links.map(([href, label, number]) => `<a class="${active === href ? "is-active" : ""}" href="${appPath(href)}"><span>${number}</span>${label}</a>`).join("")}<span class="admin-nav-disabled"><span>06</span>الطلبات <em>لاحقًا</em></span></nav><button id="adminLogout" class="admin-logout" type="button">تسجيل الخروج</button></aside>`;
 }
 
 function dashboardFrame(active, content, user) {
   frame(`<div class="admin-layout">${nav(active)}<section class="admin-workspace"><div class="admin-mobile-head"><strong>لوحة التحكم</strong><button id="adminLogoutMobile" class="admin-logout" type="button">خروج</button></div><div class="admin-workspace__top"><div><p class="admin-kicker">مساحة آمنة</p><h1>${active === "/admin" ? "لوحة التحكم" : active.split("/").pop()}</h1><p>${escapeHtml(user.email || "مشرف الإدارة")}</p></div></div><div id="adminNotice" class="admin-notice" hidden></div>${content}</section></div>`);
-  const logout = async () => { await signOutAdmin(); window.location.assign("/admin/login"); };
+  const logout = async () => { await signOutAdmin(); window.location.assign(appPath("/admin/login")); };
   document.querySelector("#adminLogout")?.addEventListener("click", logout);
   document.querySelector("#adminLogoutMobile")?.addEventListener("click", logout);
 }
@@ -91,7 +97,7 @@ async function dashboardHome(user) {
   try {
     const [products, chants, gallery] = await Promise.all([getProducts(), getChants(), getGallery()]);
     const featured = products.filter((item) => item.featured).length;
-    dashboardFrame("/admin", `<div class="admin-stat-grid"><article><span>المنتجات</span><strong>${products.length}</strong></article><article><span>الصيحات</span><strong>${chants.length}</strong></article><article><span>صور الألبوم</span><strong>${gallery.length}</strong></article><article><span>المنتجات المميزة</span><strong>${featured}</strong></article></div><section class="admin-welcome"><h2>مركز إدارة المحتوى</h2><p>اختر قسمًا من القائمة لإدارة بيانات الموقع المخزنة في Firestore.</p><div class="admin-quick-links"><a href="/admin/products">إدارة المنتجات</a><a href="/admin/chants">إدارة الصيحات</a><a href="/admin/gallery">إدارة الألبوم</a></div></section>`, user);
+    dashboardFrame("/admin", `<div class="admin-stat-grid"><article><span>المنتجات</span><strong>${products.length}</strong></article><article><span>الصيحات</span><strong>${chants.length}</strong></article><article><span>صور الألبوم</span><strong>${gallery.length}</strong></article><article><span>المنتجات المميزة</span><strong>${featured}</strong></article></div><section class="admin-welcome"><h2>مركز إدارة المحتوى</h2><p>اختر قسمًا من القائمة لإدارة بيانات الموقع المخزنة في Firestore.</p><div class="admin-quick-links"><a href="${appPath("/admin/products")}">إدارة المنتجات</a><a href="${appPath("/admin/chants")}">إدارة الصيحات</a><a href="${appPath("/admin/gallery")}">إدارة الألبوم</a></div></section>`, user);
   } catch (error) { dashboardFrame("/admin", errorBlock(error.message), user); }
 }
 
@@ -124,13 +130,13 @@ async function managerPage(kind, user, editId = null) {
   try { items = await config.get(); } catch (error) { dashboardFrame(`/admin/${kind}`, `<div class="admin-section-head"><h2>${config.title}</h2></div>${errorBlock(error.message)}`, user); return; }
   const editing = items.find((item) => item.id === editId);
   const values = defaultFormValue(kind, editing);
-  const form = `<section class="admin-form-panel"><div class="admin-section-head"><div><h2>${editing ? "تعديل" : "إضافة"} ${config.title.slice(0, -1)}</h2><p>البيانات تحفظ مباشرة في Firestore.</p></div><a class="btn btn-outline" href="/admin/${kind}">إلغاء</a></div><form id="contentForm" class="admin-form admin-form--wide">${config.fields}<p id="contentError" class="admin-error" hidden></p><button class="btn btn-gold" type="submit">${editing ? "حفظ التعديلات" : "إضافة"}</button></form></section>`;
-  const list = items.length ? `<div class="admin-table-wrap"><table class="admin-table"><thead><tr>${config.columns.map((column) => `<th>${column}</th>`).join("")}<th>الإجراءات</th></tr></thead><tbody>${items.map((item) => `<tr>${itemCells(kind, item)}<td class="admin-actions"><a href="/admin/${kind}?edit=${encodeURIComponent(item.id)}">تعديل</a><button type="button" data-delete-id="${item.id}">حذف</button></td></tr>`).join("")}</tbody></table></div>` : emptyBlock(config.empty);
-  dashboardFrame(`/admin/${kind}`, `<div class="admin-section-head"><div><h2>${config.title}</h2><p>${items.length} عنصر</p></div><a class="btn btn-gold" href="/admin/${kind}?new=1">إضافة جديد</a></div>${editing || window.location.search.includes("new=1") ? form : list}`, user);
+  const form = `<section class="admin-form-panel"><div class="admin-section-head"><div><h2>${editing ? "تعديل" : "إضافة"} ${config.title.slice(0, -1)}</h2><p>البيانات تحفظ مباشرة في Firestore.</p></div><a class="btn btn-outline" href="${appPath(`/admin/${kind}`)}">إلغاء</a></div><form id="contentForm" class="admin-form admin-form--wide">${config.fields}<p id="contentError" class="admin-error" hidden></p><button class="btn btn-gold" type="submit">${editing ? "حفظ التعديلات" : "إضافة"}</button></form></section>`;
+  const list = items.length ? `<div class="admin-table-wrap"><table class="admin-table"><thead><tr>${config.columns.map((column) => `<th>${column}</th>`).join("")}<th>الإجراءات</th></tr></thead><tbody>${items.map((item) => `<tr>${itemCells(kind, item)}<td class="admin-actions"><a href="${appPath(`/admin/${kind}?edit=${encodeURIComponent(item.id)}`)}">تعديل</a><button type="button" data-delete-id="${item.id}">حذف</button></td></tr>`).join("")}</tbody></table></div>` : emptyBlock(config.empty);
+  dashboardFrame(`/admin/${kind}`, `<div class="admin-section-head"><div><h2>${config.title}</h2><p>${items.length} عنصر</p></div><a class="btn btn-gold" href="${appPath(`/admin/${kind}?new=1`)}">إضافة جديد</a></div>${editing || window.location.search.includes("new=1") ? form : list}`, user);
   document.querySelectorAll("[data-delete-id]").forEach((button) => button.addEventListener("click", async () => {
     if (!window.confirm("هل أنت متأكد من حذف هذا العنصر؟")) return;
     button.disabled = true;
-    try { await config.remove(button.dataset.deleteId); notify("تم الحذف بنجاح"); window.setTimeout(() => window.location.assign(`/admin/${kind}`), 450); } catch (error) { notify("تعذر الحذف. حاول مرة أخرى.", "error"); button.disabled = false; }
+    try { await config.remove(button.dataset.deleteId); notify("تم الحذف بنجاح"); window.setTimeout(() => window.location.assign(appPath(`/admin/${kind}`)), 450); } catch (error) { notify("تعذر الحذف. حاول مرة أخرى.", "error"); button.disabled = false; }
   }));
   const contentForm = document.querySelector("#contentForm");
   if (contentForm) {
@@ -141,7 +147,7 @@ async function managerPage(kind, user, editId = null) {
       const payload = kind === "products" ? { name: String(data.get("name")).trim(), description: String(data.get("description") || "").trim(), price: numberValue(data.get("price")), available: data.has("available"), featured: data.has("featured"), order: numberValue(data.get("order")), imageUrl: String(data.get("imageUrl") || "").trim() } : kind === "chants" ? { title: String(data.get("title")).trim(), text: String(data.get("text") || ""), audioUrl: String(data.get("audioUrl") || "").trim(), visible: data.has("visible"), order: numberValue(data.get("order")) } : { imageUrl: String(data.get("imageUrl") || "").trim(), title: String(data.get("title") || "").trim(), alt: String(data.get("alt") || "").trim(), visible: data.has("visible"), order: numberValue(data.get("order")) };
       if ((kind === "products" && (!payload.name || payload.price < 0)) || (kind === "chants" && (!payload.title || !payload.text)) || (kind === "gallery" && (!payload.imageUrl || !payload.alt))) { notify("تحقق من الحقول المطلوبة.", "error"); return; }
       const submit = contentForm.querySelector("button[type=submit]"); submit.disabled = true;
-      try { if (editing) await config.update(editing.id, payload); else await config.create(payload); notify("تم الحفظ بنجاح"); window.setTimeout(() => window.location.assign(`/admin/${kind}`), 450); } catch (error) { notify("تعذر الحفظ. تحقق من صلاحيات Firebase.", "error"); submit.disabled = false; }
+      try { if (editing) await config.update(editing.id, payload); else await config.create(payload); notify("تم الحفظ بنجاح"); window.setTimeout(() => window.location.assign(appPath(`/admin/${kind}`)), 450); } catch (error) { notify("تعذر الحفظ. تحقق من صلاحيات Firebase.", "error"); submit.disabled = false; }
     });
   }
 }
@@ -159,7 +165,7 @@ async function protectedContent(user) {
   if (currentRoute === "/admin/settings") return settingsPage(user);
   const kind = currentRoute.split("/")[2];
   if (managerConfig[kind]) return managerPage(kind, user, new URLSearchParams(window.location.search).get("edit"));
-  window.location.assign("/admin");
+  window.location.assign(appPath("/admin"));
 }
 
 export function initAdminRoute() {
@@ -169,7 +175,7 @@ export function initAdminRoute() {
   if (isLogin) { loginView(); return; }
   loadingView();
   watchAuthState(async (user) => {
-    if (!user) { window.location.assign("/admin/login"); return; }
+    if (!user) { window.location.assign(appPath("/admin/login")); return; }
     try { const profile = await getAdminProfile(user); if (!profile) deniedView(); else await protectedContent(user); } catch { deniedView(); }
   });
 }

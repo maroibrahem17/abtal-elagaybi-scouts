@@ -75,6 +75,7 @@ body {
   background: var(--color-background);
   color: var(--color-text);
   line-height: 1.7;
+  overflow-x: hidden;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
@@ -2021,30 +2022,53 @@ input:disabled {
     display: grid;
   }
 
+  .mobile-nav a {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 3px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+
   .mobile-nav {
     display: flex;
     flex-direction: column;
     position: fixed;
     top: var(--header-h);
-    right: 0;
+    right: 12px;
     left: auto;
-    width: min(280px, 86vw);
-    background: var(--white);
+    width: min(260px, calc(100vw - 24px));
+    max-height: calc(100vh - var(--header-h) - 24px);
+    overflow-y: auto;
+    gap: 4px;
+    margin-top: 8px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--gold);
+    border-radius: 6px;
     z-index: 55;
-    padding: 12px 0;
+    padding: 8px;
     transform: translateX(110%);
-    transition: transform 0.25s ease;
-    box-shadow: var(--shadow);
+    visibility: hidden;
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.2s ease, visibility 0.25s ease;
   }
 
   .mobile-nav.is-open {
-    transform: none;
+    transform: translateX(0);
+    visibility: visible;
+    opacity: 1;
   }
 
-  .mobile-nav a {
-    padding: 12px 20px;
-    font-weight: 700;
-    color: var(--navy);
+  .mobile-nav a:last-child {
+    border-bottom: 0;
+  }
+
+  .mobile-nav a:hover,
+  .mobile-nav a:focus-visible {
+    background: var(--color-surface-soft);
+    color: var(--gold-dark);
   }
 
   .brand-text {

@@ -58,6 +58,17 @@ function resolveImageUrl(value = "") {
 }
 
 const THEME_KEY = "scouts-theme";
+const APP_BASE = import.meta.env.BASE_URL;
+
+function appPath(path = "/") {
+  return `${APP_BASE}${path.replace(/^\/+/, "")}`;
+}
+
+function currentPath() {
+  const path = window.location.pathname;
+  const normalized = APP_BASE !== "/" && path.startsWith(APP_BASE) ? path.slice(APP_BASE.length - 1) : path;
+  return normalized.replace(/\/$/, "") || "/";
+}
 
 function getStoredTheme() {
   const saved = localStorage.getItem(THEME_KEY);
@@ -170,7 +181,7 @@ function renderAuthControls() {
   }
 
   if (!publicAuthUser || !publicProfile) {
-    controls.innerHTML = `<button id="accountBtn" class="auth-link" type="button">تسجيل الدخول</button><a class="auth-link auth-link--gold" href="/signup">إنشاء حساب</a>`;
+    controls.innerHTML = `<button id="accountBtn" class="auth-link" type="button">تسجيل الدخول</button><a class="auth-link auth-link--gold" href="${appPath("/signup")}">إنشاء حساب</a>`;
   } else {
     const firstName = (publicProfile.name || publicAuthUser.email || "مستخدم").trim().split(/\s+/)[0];
     controls.innerHTML = `<span class="auth-greeting">أهلاً، ${escapeHtml(firstName)}</span><button id="accountBtn" class="auth-link" type="button">حسابي</button><button id="logoutBtn" class="auth-link auth-link--muted" type="button">تسجيل الخروج</button>`;
@@ -191,7 +202,7 @@ function renderAccountModal(message = "") {
   if (!body) return;
   if (!publicAuthUser || !publicProfile) {
     profileEditMode = false;
-    body.innerHTML = `<form id="publicLoginForm" class="account-form"><label>البريد الإلكتروني<input name="email" type="email" autocomplete="email" required /></label><label>كلمة المرور<input name="password" type="password" autocomplete="current-password" required /></label><p id="publicAuthError" class="admin-error" role="alert" ${message ? "" : "hidden"}>${escapeHtml(message)}</p><button class="btn btn-gold" type="submit">تسجيل الدخول</button><a class="auth-form-link" href="/signup">ليس لديك حساب؟ إنشاء حساب</a></form>`;
+    body.innerHTML = `<form id="publicLoginForm" class="account-form"><label>البريد الإلكتروني<input name="email" type="email" autocomplete="email" required /></label><label>كلمة المرور<input name="password" type="password" autocomplete="current-password" required /></label><p id="publicAuthError" class="admin-error" role="alert" ${message ? "" : "hidden"}>${escapeHtml(message)}</p><button class="btn btn-gold" type="submit">تسجيل الدخول</button><a class="auth-form-link" href="${appPath("/signup")}">ليس لديك حساب؟ إنشاء حساب</a></form>`;
     qs("publicLoginForm").addEventListener("submit", submitPublicLogin);
     return;
   }
@@ -224,7 +235,7 @@ async function submitPublicLogin(event) {
     const credential = await publicAuthApi.signInUser(String(data.get("email")).trim(), String(data.get("password")));
     const profile = await publicAuthApi.getUserProfile(credential.user.uid);
     if (!profile) throw new Error("profile-missing");
-    if (profile.role === "admin") { window.location.assign("/admin"); return; }
+    if (profile.role === "admin") { window.location.assign(appPath("/admin")); return; }
     publicAuthUser = credential.user;
     publicProfile = profile;
     closeOverlays();
@@ -253,11 +264,11 @@ async function logoutPublicUser() {
   publicAuthUser = null;
   publicProfile = null;
   renderAuthControls();
-  window.location.assign("/");
+  window.location.assign(appPath());
 }
 
 function renderSignupPage() {
-  if (window.location.pathname.replace(/\/$/, "") !== "/signup") return;
+  if (currentPath() !== "/signup") return;
   qs("main").innerHTML = `<section class="section signup-section"><div class="container"><div class="signup-panel"><p class="admin-kicker">كشافة أبطال العجايبي</p><h1>إنشاء حساب</h1><p class="admin-lead">انضم إلى مجتمعنا الكشفي.</p><form id="signupForm" class="admin-form signup-form"><label>الاسم الكامل<input name="name" minlength="2" required /></label><div class="admin-form-grid"><label>البريد الإلكتروني<input name="email" type="email" required /></label><label>رقم الموبايل<input name="phone" inputmode="tel" required /></label></div><div class="admin-form-grid"><label>كلمة المرور<input name="password" type="password" minlength="6" required /></label><label>تأكيد كلمة المرور<input name="confirmPassword" type="password" minlength="6" required /></label></div><label>العنوان<input name="address" required /></label><div class="admin-form-grid"><label>الفريق<input name="team" required /></label><label>المرحلة<select name="stage" required><option value="">اختر المرحلة</option>${allowedStages.map((stage) => `<option value="${stage}">${stage}</option>`).join("")}</select></label></div><p id="signupError" class="admin-error" role="alert" hidden></p><button class="btn btn-gold" type="submit">إنشاء الحساب</button><a class="auth-form-link" href="/">لديك حساب؟ تسجيل الدخول من الموقع</a></form></div></div></section>`;
   qs("signupForm").addEventListener("submit", submitSignup);
 }
@@ -282,7 +293,7 @@ async function submitSignup(event) {
     pendingSignupProfile = { uid: credential.user.uid, promise: profilePromise };
     await profilePromise;
     pendingSignupProfile = null;
-    window.location.assign("/");
+    window.location.assign(appPath());
   } catch (signupError) {
     if (pendingSignupProfile?.uid === publicAuthUser?.uid) pendingSignupProfile = null;
     error.textContent = signupError.message === "firebase-not-configured" ? "إعداد Firebase غير مكتمل بعد." : publicAuthError(signupError);
@@ -325,7 +336,7 @@ async function initPublicAuth() {
       }
       publicAuthResolved = true;
       renderAuthControls();
-      if (window.location.pathname.replace(/\/$/, "") === "/signup" && user && publicProfile) window.location.assign("/");
+      if (currentPath() === "/signup" && user && publicProfile) window.location.assign(appPath());
     });
   } catch {
     publicAuthResolved = true;
@@ -341,7 +352,7 @@ async function loadPublicFirestoreContent() {
     if (!remote) return;
     if (remote.products.length) {
       currentProducts = remote.products.map((item) => ({ ...item, image: resolveImageUrl(item.imageUrl || item.image || "") }));
-      renderProducts(window.location.pathname.replace(/\/$/, "") === "/shop" ? currentProducts : undefined);
+      renderProducts(currentPath() === "/shop" ? currentProducts : undefined);
       renderCart();
     }
     if (remote.chants.length) {
@@ -466,7 +477,7 @@ function renderProducts(list = currentProducts.filter((product) => product.featu
 }
 
 function renderShopPage() {
-  if (window.location.pathname.replace(/\/$/, "") !== "/shop") return;
+  if (currentPath() !== "/shop") return;
   qs("main").innerHTML = `
     <section class="section shop-page" aria-labelledby="shopPageTitle">
       <div class="container">
@@ -485,14 +496,14 @@ function renderShopPage() {
         <div id="productGrid" class="product-grid shop-page__grid"></div>
       </div>
     </section>`;
-  document.querySelectorAll(".brand").forEach((link) => (link.href = "/"));
+  document.querySelectorAll(".brand").forEach((link) => (link.href = appPath()));
   document.querySelectorAll(".primary-nav a, .mobile-nav a").forEach((link) => {
-    if (link.textContent.includes("المتجر")) link.href = "/shop";
-    else if (link.hash) link.href = `/${link.hash}`;
+    if (link.textContent.includes("المتجر")) link.href = appPath("/shop");
+    else if (link.hash) link.href = `${appPath()}${link.hash}`;
   });
   document.querySelectorAll(".footer-links a").forEach((link) => {
-    if (link.textContent.includes("المتجر")) link.href = "/shop";
-    else if (link.hash) link.href = `/${link.hash}`;
+    if (link.textContent.includes("المتجر")) link.href = appPath("/shop");
+    else if (link.hash) link.href = `${appPath()}${link.hash}`;
   });
   renderProducts(currentProducts);
   const filter = () => {
@@ -865,6 +876,7 @@ function closeOverlays() {
     el.hidden = true;
   });
   qs("mobileNav")?.classList.remove("is-open");
+  qs("menuBtn")?.setAttribute("aria-expanded", "false");
   const backdrop = qs("backdrop");
   if (backdrop) backdrop.hidden = true;
   document.body.classList.remove("is-locked");
@@ -874,12 +886,15 @@ function initNav() {
   qs("searchBtn")?.addEventListener("click", () => openModal("searchModal"));
   qs("cartBtn")?.addEventListener("click", () => openDrawer("cartDrawer"));
   qs("menuBtn")?.addEventListener("click", () => {
-    qs("mobileNav")?.classList.toggle("is-open");
-    qs("backdrop").hidden = !qs("mobileNav")?.classList.contains("is-open");
-    document.body.classList.toggle("is-locked", qs("mobileNav")?.classList.contains("is-open"));
+    const menu = qs("mobileNav");
+    const isOpen = menu?.classList.toggle("is-open") || false;
+    qs("menuBtn")?.setAttribute("aria-expanded", String(isOpen));
+    qs("backdrop").hidden = !isOpen;
+    document.body.classList.toggle("is-locked", isOpen);
   });
   qs("backdrop")?.addEventListener("click", closeOverlays);
   document.querySelectorAll("[data-close]").forEach((btn) => btn.addEventListener("click", closeOverlays));
+  document.querySelectorAll(".mobile-nav a").forEach((link) => link.addEventListener("click", closeOverlays));
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeOverlays();
     if (albumLightboxOpen && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) {
@@ -995,14 +1010,14 @@ function bindEvents() {
   });
 }
 
-if (window.location.pathname.replace(/\/$/, "").startsWith("/admin")) {
+if (currentPath().startsWith("/admin")) {
   import("./admin.js").then(({ initAdminRoute }) => initAdminRoute());
 } else {
   renderSignupPage();
   renderShopPage();
   applyImages();
   renderAlbum();
-  renderProducts(window.location.pathname.replace(/\/$/, "") === "/shop" ? currentProducts : undefined);
+  renderProducts(currentPath() === "/shop" ? currentProducts : undefined);
   renderChantTabs();
   renderCart();
   initThemeToggle();
