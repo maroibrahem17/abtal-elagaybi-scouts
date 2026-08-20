@@ -51,6 +51,12 @@ function qs(id) {
 function escapeHtml(value = "") {
   return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]);
 }
+
+function resolveImageUrl(value = "") {
+  if (!value.startsWith("/images/")) return value;
+  return `${import.meta.env.BASE_URL}${value.slice(1)}`;
+}
+
 const THEME_KEY = "scouts-theme";
 
 function getStoredTheme() {
@@ -334,7 +340,7 @@ async function loadPublicFirestoreContent() {
     const remote = await load();
     if (!remote) return;
     if (remote.products.length) {
-      currentProducts = remote.products.map((item) => ({ ...item, image: item.imageUrl || item.image || "" }));
+      currentProducts = remote.products.map((item) => ({ ...item, image: resolveImageUrl(item.imageUrl || item.image || "") }));
       renderProducts(window.location.pathname.replace(/\/$/, "") === "/shop" ? currentProducts : undefined);
       renderCart();
     }
@@ -343,7 +349,7 @@ async function loadPublicFirestoreContent() {
       renderChantTabs();
     }
     if (remote.gallery.length) {
-      currentAlbum = remote.gallery.filter((item) => item.visible !== false).map((item) => ({ ...item, src: item.imageUrl, alt: item.alt || item.title || "صورة من ألبوم الكشافة" }));
+      currentAlbum = remote.gallery.filter((item) => item.visible !== false).map((item) => ({ ...item, src: resolveImageUrl(item.imageUrl || ""), alt: item.alt || item.title || "صورة من ألبوم الكشافة" }));
       albumIndex = 0;
       renderAlbum();
     }

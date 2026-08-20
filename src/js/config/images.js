@@ -1,3 +1,5 @@
+const publicImage = (path) => `${import.meta.env.BASE_URL}images/${path}`;
+
 /**
  * Central image configuration.
  * Replace file paths here — do not scatter URLs across components.
@@ -9,29 +11,29 @@
  */
 export const images = {
   logos: {
-    scout: "/images/logos/scout-logo.jpg",
-    church: "/images/logos/church-logo.jpg",
+    scout: publicImage("logos/scout-logo.jpg"),
+    church: publicImage("logos/church-logo.jpg"),
   },
   hero: {
-    heroScoutImage: "/images/hero/scout.jpg",
-    heroChurchImage: "/images/hero/church.jpg",
-    heroAdventureImage: "/images/hero/adventure.jpg",
+    heroScoutImage: publicImage("hero/scout.jpg"),
+    heroChurchImage: publicImage("hero/church.jpg"),
+    heroAdventureImage: publicImage("hero/adventure.jpg"),
   },
   gallery: {
-    assemblyHall: "/images/gallery/assembly-hall.jpg",
-    courtyardMeeting: "/images/gallery/courtyard-meeting.jpg",
-    courtyardFormation: "/images/gallery/courtyard-formation.jpg",
-    workshop: "/images/gallery/workshop.jpg",
-    scoutCircle: "/images/gallery/scout-circle.jpg",
+    assemblyHall: publicImage("gallery/assembly-hall.jpg"),
+    courtyardMeeting: publicImage("gallery/courtyard-meeting.jpg"),
+    courtyardFormation: publicImage("gallery/courtyard-formation.jpg"),
+    workshop: publicImage("gallery/workshop.jpg"),
+    scoutCircle: publicImage("gallery/scout-circle.jpg"),
   },
   products: {
-    whistle: "/images/products/whistle.jpg",
-    scarf: "/images/products/scarf.jpg",
-    uniform: "/images/products/uniform.jpg",
-    belt: "/images/products/belt.jpg",
+    whistle: publicImage("products/whistle.jpg"),
+    scarf: publicImage("products/scarf.jpg"),
+    uniform: publicImage("products/uniform.jpg"),
+    belt: publicImage("products/belt.jpg"),
   },
   footer: {
-    fayoumMap: "/images/footer/fayoum-map.jpg",
+    fayoumMap: publicImage("footer/fayoum-map.jpg"),
   },
 };
 
