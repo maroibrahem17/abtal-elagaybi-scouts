@@ -1503,13 +1503,14 @@ input {
 }
 
 .site-footer {
-  background: #0C2229;
+  background: var(--color-surface-soft);
   color: var(--color-text);
+  border-top: 1px solid var(--color-border);
   padding: 48px 0 20px;
 }
 
 :root[data-theme="dark"] .site-footer {
-  background: #0C2229;
+  background: var(--navy-deep);
   color: var(--color-text);
 }
 
@@ -1525,23 +1526,11 @@ input {
   font-size: 1rem;
 }
 
-:root[data-theme="dark"] .footer-grid h3,
-:root[data-theme="dark"] .site-footer a,
-:root[data-theme="dark"] .site-footer p,
-:root[data-theme="dark"] .site-footer li,
-:root[data-theme="dark"] .copyright {
+.site-footer a,
+.site-footer p,
+.site-footer li,
+.copyright {
   color: var(--color-text);
-}
-
-:root[data-theme="dark"] .site-footer .footer-links a,
-:root[data-theme="dark"] .site-footer .socials a {
-  color: var(--color-text);
-}
-
-:root[data-theme="dark"] .site-footer .footer-links a:hover,
-:root[data-theme="dark"] .site-footer .socials a:hover,
-:root[data-theme="dark"] .site-footer a:hover {
-  color: var(--color-gold-dark);
 }
 
 .footer-links {
@@ -1551,8 +1540,10 @@ input {
 }
 
 .footer-links a:hover,
-.site-footer a:hover {
-  color: var(--gold);
+.site-footer a:hover,
+.footer-links a:focus-visible,
+.site-footer a:focus-visible {
+  color: var(--color-gold-dark);
 }
 
 .socials {
@@ -1565,6 +1556,8 @@ input {
   position: relative;
   min-height: 160px;
   overflow: hidden;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
 }
 
 .footer-map img {
@@ -1579,8 +1572,8 @@ input {
   position: absolute;
   right: 10px;
   bottom: 10px;
-  background: rgba(15, 38, 56, 0.72);
-  color: var(--cream);
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  color: var(--color-text);
   padding: 4px 8px;
   font-size: 0.8rem;
 }
@@ -1589,9 +1582,9 @@ input {
   width: min(1120px, calc(100% - 40px));
   margin: 28px auto 0;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--color-border);
   text-align: center;
-  color: #9aadb8;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
@@ -2313,8 +2306,8 @@ input:disabled {
 
 .footer-map {
   display: block;
-  border: 1px solid rgba(219, 174, 79, 0.35);
-  color: var(--cream);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .footer-map::after {
