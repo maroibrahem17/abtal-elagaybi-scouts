@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="كشافة أبطال العجايبي - كنيسة الشهيد العظيم مارمينا بالفيوم. مغامرة، خدمة، ومتجر كشفي." />
+    <title>كشافة أبطال العجايبي | كنيسة الشهيد العظيم مارمينا بالفيوم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
+      rel="stylesheet" />
+    <link rel="icon" href="/images/logos/scout-logo.jpg" />
+    <link rel="stylesheet" href="/src/css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">تخطى إلى المحتوى</a>
+
+    <header class="site-header">
+      <div class="nav-shell">
+        <a class="brand" href="/" aria-label="الصفحة الرئيسية">
+          <img
+            data-logo="scout"
+            alt="شعار كشافة أبطال العجايبي"
+            width="52"
+            height="52" />
+          <img
+            data-logo="church"
+            alt="شعار كنيسة الشهيد العظيم مارمينا بالفيوم"
+            width="52"
+            height="52" />
+          <span class="brand-text">
+            <strong>أبطال العجايبي</strong>
+            <small>كنيسة مارمينا · الفيوم</small>
+          </span>
+        </a>
+
+        <nav class="primary-nav" aria-label="التنقل الرئيسي">
+          <a href="#about">من نحن</a>
+          <a href="#activities">ألبوم الصور</a>
+          <a href="/shop">المتجر الكشفي</a>
+          <a href="#contact">اتصل بنا</a>
+        </nav>
+
+        <div class="nav-utils">
+          <button
+            id="searchBtn"
+            class="icon-btn"
+            type="button"
+            aria-label="البحث">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8" />
+              <path
+                d="M20 20l-3.2-3.2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round" />
+            </svg>
+          </button>
+          <button
+            id="cartBtn"
+            class="icon-btn"
+            type="button"
+            aria-label="السلة">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6 7h15l-1.6 8.2a2 2 0 0 1-2 1.6H9.2a2 2 0 0 1-2-1.5L5 4H2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+              <circle cx="10" cy="20" r="1.4" />
+              <circle cx="18" cy="20" r="1.4" />
+            </svg>
+            <span class="badge" data-cart-count hidden>0</span>
+          </button>
+          <div id="authControls" class="auth-controls"></div>
+          <button
+            id="themeToggle"
+            class="icon-btn theme-toggle"
+            type="button"
+            aria-label="تبديل الوضع الداكن/الفاتح"
+            title="تبديل الوضع">
+            <span aria-hidden="true">☀️</span>
+          </button>
+          <button
+            id="menuBtn"
+            class="icon-btn menu-btn"
+            type="button"
+            aria-label="القائمة">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M4 7h16M4 12h16M4 17h16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <nav id="mobileNav" class="mobile-nav" aria-label="قائمة الجوال">
+      <a href="#about">من نحن</a>
+      <a href="#activities">ألبوم الصور</a>
+      <a href="/shop">المتجر الكشفي</a>
+      <a href="#contact">اتصل بنا</a>
+      <a href="#chants">الصيحات الكشفية</a>
+    </nav>
+
+    <main id="main">
+      <section class="hero" id="home" aria-labelledby="heroTitle">
+        <div class="hero-collage" aria-hidden="true">
+          <figure class="hero-panel hero-panel--scout">
+            <img
+              id="heroScoutImage"
+              alt=""
+              width="1200"
+              height="800"
+              fetchpriority="high" />
+          </figure>
+          <figure class="hero-panel hero-panel--church">
+            <img
+              id="heroChurchImage"
+              alt=""
+              width="1400"
+              height="800"
+              fetchpriority="high" />
+          </figure>
+          <figure class="hero-panel hero-panel--adventure">
+            <img id="heroAdventureImage" alt="" width="1100" height="800" />
+          </figure>
+          <div class="hero-overlay"></div>
+        </div>
+
+        <div class="hero-copy">
+          <p class="eyebrow">كنيسة الشهيد العظيم مارمينا بالفيوم</p>
+          <h1 id="heroTitle">اكتشف عالم المغامرة والخدمة معنا</h1>
+          <p class="hero-kicker">كشافة أبطال العجايبي</p>
+          <p class="hero-lead">
+            فريق كشفي تابع لكنيسة الشهيد العظيم مارمينا بالفيوم، نسعى لبناء
+            شخصية مسيحية قوية من خلال المغامرات والمخيمات والخدمة.
+          </p>
+          <a class="btn btn-gold" href="#about">اكتشف المزيد</a>
+        </div>
+      </section>
+
+      <section
+        class="section chants-section"
+        id="chants"
+        aria-labelledby="chantsTitle">
+        <div class="container">
+          <header class="section-head">
+            <div class="ornament" aria-hidden="true"></div>
+            <h2 id="chantsTitle">الصيحات الكشفية</h2>
+            <p>اختر صيحة للاستماع إليها</p>
+          </header>
+
+          <div class="chants-layout">
+            <aside class="chant-tabs" aria-label="قائمة الصيحات">
+              <div
+                id="chantList"
+                role="listbox"
+                aria-label="الصيحات الكشفية"></div>
+            </aside>
+
+            <div class="papyrus-stage">
+              <article
+                id="papyrus"
+                class="papyrus is-closed"
+                aria-live="polite"
+                aria-label="درج الصيحة">
+                <div class="papyrus-rod papyrus-rod--start" aria-hidden="true">
+                  <span></span>
+                </div>
+                <div class="papyrus-sheet">
+                  <button
+                    id="papyrusClose"
+                    class="papyrus-close"
+                    type="button"
+                    aria-label="إغلاق الدرج"
+                    title="إغلاق">
+                    ×
+                  </button>
+                  <div class="papyrus-ornament" aria-hidden="true"></div>
+                  <div class="papyrus-content">
+                    <p class="papyrus-hint" id="papyrusHint">
+                      اختر صيحة لفتح الدرج
+                    </p>
+                    <h3 id="chantTitle" class="papyrus-title"></h3>
+                    <div id="chantBody" class="chant-body lyrics-scroll"></div>
+                    <div class="player" id="chantPlayer">
+                      <button
+                        id="playBtn"
+                        class="player-btn"
+                        type="button"
+                        aria-pressed="false">
+                        <svg
+                          class="icon-play"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true">
+                          <path d="M8 6.5v11l10-5.5L8 6.5z" />
+                        </svg>
+                        <svg
+                          class="icon-pause"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true">
+                          <path d="M7 6h3.4v12H7zM13.6 6H17v12h-3.4z" />
+                        </svg>
+                        <span class="play-label">تشغيل</span>
+                      </button>
+                      <div class="player-track">
+                        <span id="currentTime" class="player-time">0:00</span>
+                        <button
+                          id="progressTrack"
+                          class="progress"
+                          type="button"
+                          aria-label="شريط التقدم">
+                          <span id="progressBar"></span>
+                        </button>
+                        <span id="durationTime" class="player-time">0:00</span>
+                      </div>
+                      <label class="volume">
+                        <span class="sr-only">الصوت</span>
+                        <input
+                          id="volumeSlider"
+                          type="range"
+                          min="0"
+                          max="1"
+                          step="0.05"
+                          value="0.9" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="papyrus-rod papyrus-rod--end" aria-hidden="true">
+                  <span></span>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section about-section"
+        id="about"
+        aria-labelledby="aboutTitle">
+        <div class="container about-grid">
+          <div>
+            <header class="section-head section-head--start">
+              <div class="ornament" aria-hidden="true"></div>
+              <h2 id="aboutTitle">من نحن</h2>
+              <p>كشافة ومرشدات في حضن الكنيسة</p>
+            </header>
+            <p class="prose">
+              كشافة أبطال العجايبي فريق كشفي كنسي ينتمي إلى كنيسة الشهيد العظيم
+              مارمينا بالفيوم. نجمع بين روح المغامرة ومنهج الكشافة وروح الخدمة
+              المسيحية، لنُعد جيلًا أمينًا لله والوطن والكنيسة.
+            </p>
+            <ul class="facts">
+              <li>مخيمات وأنشطة خارجية</li>
+              <li>تدريب قيادي وروحي</li>
+              <li>خدمة المجتمع والأيتام</li>
+            </ul>
+          </div>
+          <div class="photo-stack">
+            <img
+              id="aboutImage1"
+              alt="فريق الكشافة في فناء الكنيسة"
+              loading="lazy"
+              width="720"
+              height="540" />
+            <img
+              id="aboutImage2"
+              alt="صيحات كشفية في ساحة الكنيسة"
+              loading="lazy"
+              width="720"
+              height="540" />
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section album-section"
+        id="activities"
+        aria-labelledby="albumTitle">
+        <div class="container">
+          <header class="section-head">
+            <div class="ornament" aria-hidden="true"></div>
+            <h2 id="albumTitle">ألبوم الصور</h2>
+            <p>لحظات وذكريات من حياة كشافة أبطال العجايبي</p>
+          </header>
+          <div class="album" id="photoAlbum" aria-label="ألبوم الصور">
+            <button
+              class="album-arrow album-arrow--prev"
+              type="button"
+              data-album-prev
+              aria-label="الصورة السابقة">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m14.5 5-7 7 7 7" />
+              </svg>
+            </button>
+            <button
+              class="album-frame"
+              type="button"
+              data-album-open
+              aria-label="فتح الصورة بالحجم الكامل">
+              <img
+                id="albumImage"
+                alt=""
+                width="1200"
+                height="720"
+                fetchpriority="high" />
+              <span class="album-zoom" aria-hidden="true">تكبير</span>
+            </button>
+            <button
+              class="album-arrow album-arrow--next"
+              type="button"
+              data-album-next
+              aria-label="الصورة التالية">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9.5 5 7 7-7 7" />
+              </svg>
+            </button>
+            <div class="album-meta">
+              <span id="albumCounter">الصورة 1 من 5</span>
+              <div
+                id="albumDots"
+                class="album-dots"
+                aria-label="اختيار صورة"></div>
+            </div>
+            <div
+              id="albumThumbs"
+              class="album-thumbs"
+              aria-label="صور الألبوم"></div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section shop-section"
+        id="shop"
+        aria-labelledby="shopTitle">
+        <div class="container">
+          <header class="section-head">
+            <div class="ornament" aria-hidden="true"></div>
+            <h2 id="shopTitle">المتجر الكشفي</h2>
+            <p>كشافة ومرشدات كنيسة الشهيد العظيم مارمينا بالفيوم</p>
+          </header>
+          <div id="productGrid" class="product-grid"></div>
+          <a class="btn btn-outline shop-more" href="/shop"
+            >عرض جميع المنتجات <span aria-hidden="true">←</span></a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-grid">
+        <a
+          class="footer-map"
+          href="https://www.google.com/maps/search/?api=1&amp;query=%D9%83%D9%86%D9%8A%D8%B3%D8%A9%20%D8%A7%D9%84%D8%B4%D9%87%D9%8A%D8%AF%20%D8%A7%D9%84%D8%B9%D8%B8%D9%8A%D9%85%20%D9%85%D8%A7%D8%B1%D9%85%D9%8A%D9%86%D8%A7%20%D8%A8%D8%A7%D9%84%D9%81%D9%8A%D9%88%D9%85%20%D8%B4%D8%A7%D8%B1%D8%B9%20%D8%A7%D9%84%D8%B9%D8%B1%D9%8A%D8%A7%D9%86%20%D8%A8%D8%B9%D8%AF%20%D9%81%D8%B1%D8%B9%20%D8%A7%D9%88%D8%B1%D9%86%D8%AC"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="افتح موقع كنيسة الشهيد العظيم مارمينا بالفيوم على خرائط جوجل">
+          <img
+            id="fayoumMap"
+            alt="خريطة موقع كنيسة الشهيد العظيم مارمينا بالفيوم"
+            loading="lazy"
+            width="640"
+            height="420" />
+          <span>كنيسة الشهيد العظيم مارمينا بالفيوم</span>
+        </a>
+
+        <div>
+          <h3>تواصل معنا</h3>
+          <p>هاتف: <a href="tel:01013293865">01013293865</a></p>
+          <p>
+            بريد:
+            <a href="mailto:scouts@stmarkfayoum.org">scouts@stmarkfayoum.org</a>
+          </p>
+          <p>
+            المكان: <span data-site-address>شارع العريان بعد فرع اورنج</span>
+          </p>
+        </div>
+
+        <div>
+          <h3>روابط سريعة</h3>
+          <ul class="footer-links">
+            <li><a href="#home">الرئيسية</a></li>
+            <li><a href="#about">من نحن</a></li>
+            <li><a href="#activities">ألبوم الصور</a></li>
+            <li><a href="/shop">المتجر الكشفي</a></li>
+            <li><a href="#contact">اتصل بنا</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>تابعنا</h3>
+          <div class="socials">
+            <a
+              href="https://www.facebook.com/abtal.3gaiby"
+              aria-label="فيسبوك"
+              rel="noopener noreferrer"
+              target="_blank"
+              ><span aria-hidden="true">f</span> Facebook</a
+            >
+            <a
+              href="https://www.instagram.com/stminascouts/"
+              aria-label="إنستغرام"
+              rel="noopener noreferrer"
+              target="_blank"
+              ><span aria-hidden="true">◎</span> Instagram</a
+            >
+          </div>
+        </div>
+      </div>
+      <p class="copyright">
+        © كشافة أبطال العجايبي — كنيسة الشهيد العظيم مارمينا بالفيوم
+      </p>
+    </footer>
+
+    <div id="backdrop" class="backdrop" hidden></div>
+
+    <div
+      id="albumLightbox"
+      class="album-lightbox"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="albumLightboxTitle">
+      <div class="album-lightbox__panel">
+        <div class="album-lightbox__head">
+          <h2 id="albumLightboxTitle">ألبوم الصور</h2>
+          <button
+            class="icon-btn"
+            type="button"
+            data-album-close
+            aria-label="إغلاق">
+            ×
+          </button>
+        </div>
+        <div class="album-lightbox__media">
+          <button
+            class="album-arrow album-arrow--prev"
+            type="button"
+            data-album-prev
+            aria-label="الصورة السابقة">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m14.5 5-7 7 7 7" />
+            </svg>
+          </button>
+          <img id="albumLightboxImage" alt="" width="1400" height="900" />
+          <button
+            class="album-arrow album-arrow--next"
+            type="button"
+            data-album-next
+            aria-label="الصورة التالية">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9.5 5 7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+        <span id="albumLightboxCounter" class="album-lightbox__counter"
+          >الصورة 1 من 5</span
+        >
+      </div>
+    </div>
+
+    <aside id="cartDrawer" class="drawer" hidden aria-labelledby="cartTitle">
+      <div class="drawer-head">
+        <h2 id="cartTitle">السلة</h2>
+        <button type="button" class="icon-btn" data-close aria-label="إغلاق">
+          ×
+        </button>
+      </div>
+      <div id="cartList" class="drawer-body"></div>
+      <div class="drawer-foot">
+        <span>الإجمالي</span>
+        <strong id="cartTotal">0 ج.م</strong>
+      </div>
+    </aside>
+
+    <div
+      id="searchModal"
+      class="modal"
+      hidden
+      role="dialog"
+      aria-labelledby="searchTitle"
+      aria-modal="true">
+      <div class="drawer-head">
+        <h2 id="searchTitle">البحث</h2>
+        <button type="button" class="icon-btn" data-close aria-label="إغلاق">
+          ×
+        </button>
+      </div>
+      <form id="searchForm" class="search-form">
+        <label class="sr-only" for="searchInput">ابحث في الموقع</label>
+        <input
+          id="searchInput"
+          name="q"
+          type="search"
+          placeholder="ابحث عن منتج أو نشاط..." />
+        <button class="btn btn-gold" type="submit">بحث</button>
+      </form>
+    </div>
+
+    <div
+      id="accountModal"
+      class="modal"
+      hidden
+      role="dialog"
+      aria-labelledby="accountTitle"
+      aria-modal="true">
+      <div class="drawer-head">
+        <h2 id="accountTitle">حسابي</h2>
+        <button type="button" class="icon-btn" data-close aria-label="إغلاق">
+          ×
+        </button>
+      </div>
+      <div id="accountModalBody"></div>
+    </div>
+
+    <script type="module" src="/src/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "abtal-elagaybi-scouts",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "firebase:deploy:firestore": "firebase deploy --only firestore:rules"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "firebase": "^12.18.0"
+  }
+}
